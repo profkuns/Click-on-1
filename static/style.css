@@ -146,28 +146,70 @@ button {
     background-color: #0056b3;
 }
 
-/* Table */
+/* Table Wrapper */
 #lock-sequence {
     margin-top: 20px;
     padding: 15px;
     border-radius: 8px;
     width: 100%;
+    max-width: 100%; /* Prevents table from overflowing */
     overflow-x: auto;
+    background: var(--card-bg);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Table Styling */
 table {
     width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
     background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-th, td {
+/* Table Header */
+th {
+    background: var(--table-header-bg);
+    color: var(--table-header-text);
+    font-weight: bold;
+    padding: 14px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Table Rows */
+td {
     padding: 12px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
-/* Mobile Fixes */
+/* Alternate Row Striping */
+tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Hover Effect */
+tr:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Adjustments */
+.dark-mode th {
+    background: #444;
+    color: #fff;
+}
+
+.dark-mode tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Ensure responsiveness for smaller screens */
 @media (max-width: 600px) {
     .app-container {
         width: 95%;
@@ -187,5 +229,17 @@ th, td {
     button {
         width: 90%;
         margin: 8px 0;
+    }
+
+    #lock-sequence {
+        padding: 10px;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 10px;
     }
 }
