@@ -274,7 +274,6 @@ tr:hover {
 /* Export Section */
 .export-section {
     padding: 15px;
-    width: 100%;
 }
 
 /* Export Dropdowns */
@@ -298,3 +297,39 @@ tr:hover {
     gap: 10px;
     margin-top: 10px;
 }
+/* Fix Export Section Alignment */
+.export-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Adjust Dropdowns for Better Readability */
+.export-section select {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+/* Align Filter Label */
+.export-section label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Stack Buttons for Mobile */
+@media (max-width: 600px) {
+    .export-section .button-group {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .export-section button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
