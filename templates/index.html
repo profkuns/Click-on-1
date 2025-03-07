@@ -77,32 +77,36 @@
     </div>
 
     <script>
-        function generateLock() {
-            let pinCount = document.getElementById("pin-count").value;
-            let formData = new URLSearchParams();
-            formData.append("pins", pinCount);
+    function generateLock() {
+        let pinCount = document.getElementById("pin-count").value;
+        let standard = document.getElementById("standard").checked;
+        let spool = document.getElementById("spool").checked;
+        let serrated = document.getElementById("serrated").checked;
+        let hardMode = document.getElementById("hard-mode").checked;
 
-            fetch("/generate", { method: "POST", body: formData })
-                .then(res => res.json())
-                .then(data => {
-                    let output = data.map(row => 
-                        `<tr><td>${row.spot}</td><td>${row.pin}</td><td>${row.type}</td></tr>`).join("");
-                    document.getElementById("sequence-body").innerHTML = output;
-                });
-        }
+        let formData = new URLSearchParams();
+        formData.append("pins", pinCount);
+        formData.append("standard", standard);
+        formData.append("spool", spool);
+        formData.append("serrated", serrated);
+        formData.append("hard_mode", hardMode);
 
-        function downloadLog() {
-            let entries = document.getElementById("num-entries").value;
-            let filter = document.getElementById("filter-type").value;
-            window.location.href = `/download_log?entries=${entries}&filter=${filter}`;
-        }
+        fetch("/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            let output = data.map(row =>
+                `<tr><td>${row.spot}</td><td>${row.pin}</td><td>${row.type}</td></tr>`
+            ).join("");
+            document.getElementById("sequence-body").innerHTML = output;
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
 
-        function clearLog() {
-            fetch("/clear_log", { method: "POST" })
-                .then(res => res.json())
-                .then(data => alert(data.message));
-        }
-    </script>
     <script>
     function toggleDarkMode() {
         document.body.classList.toggle("dark-mode");

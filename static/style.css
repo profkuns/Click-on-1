@@ -10,7 +10,7 @@
     --button-hover: #218838;
 }
 
-/* Dark Mode */
+/* Dark Mode Styles */
 .dark-mode {
     --bg-color: #121212;
     --text-color: #f4f4f4;
@@ -22,9 +22,46 @@
     --button-hover: #0c6e35;
 }
 
+/* Apply Dark Mode */
+.dark-mode body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.dark-mode .app-container {
+    background-color: var(--card-bg);
+}
+
+.dark-mode table {
+    background-color: var(--card-bg);
+}
+
+.dark-mode th {
+    background: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+.dark-mode tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode Buttons */
+.dark-mode button {
+    background-color: var(--button-bg);
+    color: white;
+}
+
+.dark-mode button:hover {
+    background-color: var(--button-hover);
+}
+
 /* Smooth Transition */
 body, .app-container, table, th, td, button {
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Layout */
@@ -148,18 +185,6 @@ button {
 
 /* === FULLY REVERTED TABLE DESIGN === */
 
-/* Table Container */
-#lock-sequence {
-    /*margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    width: 100%;*/
-   /* max-width: 800px;*/ /* Ensures it does not exceed the app container */
-   /* background: var(--card-bg);
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;*/
-}
-
 /* Table */
 table {
     width: 100%;
@@ -245,16 +270,11 @@ tr:hover {
         padding: 10px;
     }
 }
+
 /* Export Section */
 .export-section {
-    /*margin-top: 20px;*/
     padding: 15px;
-    /*border-radius: 8px;*/
     width: 100%;
-    /*max-width: 800px;
-    background: var(--card-bg);
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;*/
 }
 
 /* Export Dropdowns */

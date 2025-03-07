@@ -11,11 +11,17 @@ LOG_FILE = "logs.csv"
 # Generate a Pin Sequence
 @app.route("/generate", methods=["POST"])
 def generate_sequence():
-    pin_count = int(request.form.get("pins", "6")[0])  # Extract the number (4,5,6)
+    pin_count = request.form.get("pins", "6")  
     standard = request.form.get("standard", "false") == "true"
     spool = request.form.get("spool", "false") == "true"
     serrated = request.form.get("serrated", "false") == "true"
     hard_mode = request.form.get("hard_mode", "false") == "true"
+
+    # Ensure pin count is an integer
+    try:
+        pin_count = int(pin_count[0])  # Extract number from "6 Pin" string
+    except ValueError:
+        return jsonify({"error": "Invalid pin count"}), 400
 
     available_types = []
     if standard:
@@ -25,43 +31,25 @@ def generate_sequence():
     if serrated:
         available_types.append("serrated")
 
-    # Ensure at least one pin type is available
     if not available_types:
-        available_types.append("standard")
+        available_types.append("standard")  # Default to standard if none are selected
 
     sequence = []
     previous_height = None
 
     for i in range(pin_count):
-        # Generate a random pin height (1-8)
         pin_height = random.randint(1, 8)
 
-        # Hard Mode: Increase variation in pin heights
         if hard_mode and previous_height is not None:
             while abs(pin_height - previous_height) < 2:  # Ensure variation
                 pin_height = random.randint(1, 8)
 
-        # Select a random pin type from enabled options
         pin_type = random.choice(available_types)
-
         sequence.append({"spot": i + 1, "pin": pin_height, "type": pin_type})
         previous_height = pin_height
 
-    # Get timestamp
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # Log the generated sequence
-    log_data = [[timestamp, f"{pin_count} Pin", item["spot"], item["pin"], item["type"], "Yes" if hard_mode else "No"] for item in sequence]
-
-    # Save to CSV
-    file_exists = os.path.exists(LOG_FILE)
-    with open(LOG_FILE, "a", newline="") as file:
-        writer = csv.writer(file)
-        if not file_exists:
-            writer.writerow(["Timestamp", "Lock Type", "Spot", "Pin Height", "Pin Type", "Hard Mode"])
-        writer.writerows(log_data)
-
     return jsonify(sequence)
+
 
 # Export CSV Log
 @app.route("/download_log")
