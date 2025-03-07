@@ -12,7 +12,8 @@
     <div class="container">
         <i id="darkModeIcon" class="fas fa-moon dark-mode-toggle" onclick="toggleDarkMode()"></i>
 
-        <h1>Click on 1</h1> <!-- Updated App Name -->
+        <h1>Click on 1</h1> <!-- App Title -->
+        <h2 class="subtitle">An app to help lockpickers with American 1100/700's and similar locks</h2> <!-- New Subtitle -->
 
         <div class="controls">
             <label for="pin-count">Select Lock Type:</label>
@@ -72,7 +73,7 @@
         </div>
     </div>
 
-        <script>
+    <script>
         function generateLock() {
             var pinCount = document.getElementById("pin-count").value;
             var standard = document.getElementById("standard").checked;
@@ -101,8 +102,13 @@
             })
             .catch(error => console.error("Error:", error));
         }
-    </script>
 
+        function downloadLog() {
+            var entries = document.getElementById("num-entries").value;
+            var filter = document.getElementById("filter-type").value;
+            window.location.href = `/download_log?entries=${entries}&filter=${filter}`;
+        }
+    </script>
 
 </body>
 </html>

@@ -2,10 +2,17 @@ from flask import Flask, render_template, request, jsonify, send_file
 import csv
 import random
 import os
+from datetime import datetime
 
 app = Flask(__name__, static_folder="static")
 
 LOG_FILE = "lock_log.csv"
+
+# Ensure the log file has a header row when first created
+if not os.path.exists(LOG_FILE):
+    with open(LOG_FILE, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Timestamp", "Lock Type", "Hard Mode", "Pin Spot", "Pin Number", "Pin Type"])
 
 # Function to generate lock sequences with optional Hard Mode
 def generate_lock_sequence(num_pins, enabled_pins, hard_mode):
@@ -60,20 +67,26 @@ def generate_lock_sequence(num_pins, enabled_pins, hard_mode):
 
         sequence.append({"spot": i + 1, "pin": pin, "type": lock_type})
 
-    log_sequence(num_pins, sequence)
+    log_sequence(num_pins, sequence, hard_mode, enabled_pins)
     return sequence
 
-# Log sequences to CSV
-def log_sequence(num_pins, sequence):
+# Log sequences to CSV with timestamps and user settings
+def log_sequence(num_pins, sequence, hard_mode, enabled_pins):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    hard_mode_text = "ON" if hard_mode else "OFF"
+    pin_types_enabled = ", ".join([k for k, v in enabled_pins.items() if v])
+
     with open(LOG_FILE, "a", newline="") as file:
         writer = csv.writer(file)
         for row in sequence:
-            writer.writerow([num_pins, row["spot"], row["pin"], row["type"]])
+            writer.writerow([timestamp, num_pins, hard_mode_text, row["spot"], row["pin"], row["type"]])
 
-# Clear log file
+# Clear log file (keeps header row)
 @app.route("/clear_log", methods=["POST"])
 def clear_log():
-    open(LOG_FILE, "w").close()
+    with open(LOG_FILE, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Timestamp", "Lock Type", "Hard Mode", "Pin Spot", "Pin Number", "Pin Type"])
     return jsonify({"message": "Log cleared!"})
 
 # Generate lock sequences
@@ -101,18 +114,23 @@ def download_log():
 
     with open(LOG_FILE, "r") as file:
         reader = list(csv.reader(file))
+    
+    # Apply filtering (Ignore header)
+    header = reader[0]
+    rows = reader[1:]
 
     if filter_type != "0":
-        reader = [row for row in reader if row[0] == filter_type]
+        rows = [row for row in rows if row[1] == filter_type]
 
     if entries != "0":
-        reader = reader[-int(entries):]
+        rows = rows[-int(entries):]
 
+    # Write filtered data to a new file
     temp_file = "filtered_log.csv"
     with open(temp_file, "w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["Lock Type", "Spot", "Pin Number", "Type"])
-        writer.writerows(reader)
+        writer.writerow(header)
+        writer.writerows(rows)
 
     return send_file(temp_file, as_attachment=True)
 
