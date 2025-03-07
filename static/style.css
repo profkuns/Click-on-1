@@ -150,14 +150,14 @@ button {
 
 /* Table Container */
 #lock-sequence {
-    margin-top: 20px;
+    /*margin-top: 20px;
     padding: 15px;
     border-radius: 8px;
-    width: 100%;
-    max-width: 800px; /* Ensures it does not exceed the app container */
-    background: var(--card-bg);
+    width: 100%;*/
+   /* max-width: 800px;*/ /* Ensures it does not exceed the app container */
+   /* background: var(--card-bg);
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
+    overflow-x: auto;*/
 }
 
 /* Table */
@@ -247,14 +247,14 @@ tr:hover {
 }
 /* Export Section */
 .export-section {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     padding: 15px;
-    border-radius: 8px;
+    /*border-radius: 8px;*/
     width: 100%;
-    max-width: 800px;
+    /*max-width: 800px;
     background: var(--card-bg);
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: center;*/
 }
 
 /* Export Dropdowns */
