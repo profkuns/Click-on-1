@@ -1,0 +1,190 @@
+/* Default Light Mode */
+:root {
+    --bg-color: #f4f4f4;
+    --text-color: #333;
+    --card-bg: white;
+    --table-header-bg: #555;
+    --table-header-text: white;
+    --table-row-bg: #f9f9f9;
+    --button-bg: #28a745;
+    --button-hover: #218838;
+    --download-bg: #007bff;
+    --download-hover: #0056b3;
+    --clear-bg: #dc3545;
+    --clear-hover: #c82333;
+}
+
+/* Dark Mode */
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #f4f4f4;
+    --card-bg: #1e1e1e;
+    --table-header-bg: #333;
+    --table-header-text: #ddd;
+    --table-row-bg: #2a2a2a;
+    --button-bg: #0f8b42;
+    --button-hover: #0c6e35;
+    --download-bg: #0066cc;
+    --download-hover: #004499;
+    --clear-bg: #a30021;
+    --clear-hover: #82001a;
+}
+
+/* Base Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Center Content */
+.container {
+    width: 50%;
+    text-align: center;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Dark Mode Toggle Icon */
+.dark-mode-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.2);
+}
+
+/* Title */
+h1 {
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+/* Control Section */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Dropdown Styling */
+select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.checkbox-group label {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+/* Buttons */
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    color: white;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Generate Button */
+.generate-btn {
+    background-color: var(--button-bg);
+}
+
+.generate-btn:hover {
+    background-color: var(--button-hover);
+}
+
+/* Download Button */
+.download-btn {
+    background-color: var(--download-bg);
+}
+
+.download-btn:hover {
+    background-color: var(--download-hover);
+}
+
+/* Clear Log Button */
+.clear-btn {
+    background-color: var(--clear-bg);
+}
+
+.clear-btn:hover {
+    background-color: var(--clear-hover);
+}
+
+/* Lock Sequence Display */
+#lock-sequence {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: var(--text-color);
+}
+
+/* Table Header */
+th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+    font-size: 16px;
+}
+
+/* Alternating Table Row Colors */
+tr:nth-child(even) {
+    background-color: var(--table-row-bg);
+}

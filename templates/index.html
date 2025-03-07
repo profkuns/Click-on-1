@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click on 1</title> <!-- Updated App Name -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <i id="darkModeIcon" class="fas fa-moon dark-mode-toggle" onclick="toggleDarkMode()"></i>
+
+        <h1>Click on 1</h1> <!-- Updated App Name -->
+
+        <div class="controls">
+            <label for="pin-count">Select Lock Type:</label>
+            <select id="pin-count">
+                <option value="4">4-Chamber Lock</option>
+                <option value="5">5-Chamber Lock</option>
+                <option value="6" selected>6-Chamber Lock</option>
+            </select>
+        </div>
+
+        <div class="checkbox-group">
+            <label><input type="checkbox" id="standard" checked> Standard</label>
+            <label><input type="checkbox" id="spool" checked> Spool</label>
+            <label><input type="checkbox" id="serrated" checked> Serrated</label>
+        </div>
+
+        <div class="checkbox-group">
+            <label><input type="checkbox" id="hard-mode"> Hard Mode (High Variation)</label>
+        </div>
+
+        <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button> <!-- Updated Button -->
+
+        <div id="lock-sequence">
+            <h2>Pin Sequence</h2> <!-- Updated Heading -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Spot</th>
+                        <th>Pin Number</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody id="sequence-body"></tbody>
+            </table>
+        </div>
+
+        <div class="controls">
+            <label for="filter-type">Filter Logs:</label>
+            <select id="filter-type">
+                <option value="0">All Locks</option>
+                <option value="4">4-Chamber</option>
+                <option value="5">5-Chamber</option>
+                <option value="6">6-Chamber</option>
+            </select>
+
+            <label for="num-entries">Entries to Export:</label>
+            <select id="num-entries">
+                <option value="10">Last 10</option>
+                <option value="25">Last 25</option>
+                <option value="50">Last 50</option>
+                <option value="100">Last 100</option>
+                <option value="0">All</option>
+            </select>
+
+            <button class="download-btn" onclick="downloadLog()">Download Log</button>
+            <button class="clear-btn" onclick="clearLog()">Clear Log</button>
+        </div>
+    </div>
+
+        <script>
+        function generateLock() {
+            var pinCount = document.getElementById("pin-count").value;
+            var standard = document.getElementById("standard").checked;
+            var spool = document.getElementById("spool").checked;
+            var serrated = document.getElementById("serrated").checked;
+            var hardMode = document.getElementById("hard-mode").checked;
+
+            var formData = new URLSearchParams();
+            formData.append("pins", pinCount);
+            formData.append("standard", standard);
+            formData.append("spool", spool);
+            formData.append("serrated", serrated);
+            formData.append("hard_mode", hardMode);
+
+            fetch("/generate", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                let output = "";
+                data.forEach(row => { 
+                    output += `<tr><td>${row.spot}</td><td>${row.pin}</td><td>${row.type}</td></tr>`; 
+                });
+                document.getElementById("sequence-body").innerHTML = output;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+
+</body>
+</html>
