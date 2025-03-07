@@ -52,7 +52,7 @@ h1 {
     font-size: 1rem;
     font-weight: 400;
     color: var(--text-color);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     opacity: 0.8;
 }
 
@@ -60,21 +60,24 @@ h1 {
 .controls {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-label {
-    font-size: 1rem;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Dropdowns */
 select {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     font-size: 1rem;
     border-radius: 5px;
     border: 1px solid #ccc;
+    background: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
 }
 
 /* Checkboxes */
@@ -82,8 +85,8 @@ select {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 /* Buttons */
@@ -95,6 +98,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s ease;
+    margin: 8px 0;  /* Adds space around buttons */
 }
 
 .generate-btn {
@@ -128,7 +132,11 @@ button {
 
 /* Responsive Table */
 #lock-sequence {
-    margin-top: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
 }
 
@@ -140,7 +148,7 @@ table {
 }
 
 th, td {
-    padding: 10px;
+    padding: 12px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
@@ -150,7 +158,37 @@ th {
     color: var(--table-header-text);
 }
 
-/* Mobile Styles */
+/* Desktop-Specific Styles */
+@media (min-width: 800px) {
+    .container {
+        max-width: 900px;
+    }
+
+    .controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .checkbox-group {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    button {
+        width: auto;
+        padding: 12px 20px;
+    }
+
+    select {
+        width: auto;
+        padding: 10px 15px;
+    }
+}
+
+/* Mobile Optimization */
 @media (max-width: 600px) {
     .container {
         width: 100%;
@@ -173,13 +211,19 @@ th {
     button {
         font-size: 0.9rem;
         padding: 10px;
+        margin: 10px 0; /* Adds more space for touch-friendly layout */
     }
 
     select {
         font-size: 0.9rem;
+        padding: 8px;
     }
 
     table {
         font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 8px;
     }
 }
