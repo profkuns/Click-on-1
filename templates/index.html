@@ -9,12 +9,12 @@
 </head>
 <body>
 
-    <div class="container">
-        <!-- Dark Mode Toggle Icon -->
+    <div class="app-container">
+        <!-- Dark Mode Toggle -->
         <i id="darkModeIcon" class="fas fa-moon dark-mode-toggle" onclick="toggleDarkMode()"></i>
 
-        <h1>Click on 1</h1> <!-- App Title -->
-        <h2 class="subtitle">An app to help lockpickers with American 1100/700's and similar locks</h2> <!-- Subtitle -->
+        <h1>Click on 1</h1>
+        <h2 class="subtitle">An app to help lockpickers with American 1100/700's and similar locks</h2>
 
         <div class="controls">
             <label for="pin-count">Select Lock Type:</label>
@@ -35,13 +35,12 @@
             <label><input type="checkbox" id="hard-mode"> Hard Mode (High Variation)</label>
         </div>
 
-        <!-- Generate Button -->
         <div class="button-group">
             <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button>
         </div>
 
         <div id="lock-sequence">
-            <h2>Pin Sequence</h2> <!-- Updated Heading -->
+            <h2>Pin Sequence</h2>
             <table>
                 <thead>
                     <tr>
@@ -54,7 +53,6 @@
             </table>
         </div>
 
-        <!-- Log Buttons -->
         <div class="button-group">
             <button class="download-btn" onclick="downloadLog()">Download Log</button>
             <button class="clear-btn" onclick="clearLog()">Clear Log</button>
@@ -92,8 +90,8 @@
         }
 
         function downloadLog() {
-            var entries = document.getElementById("num-entries").value;
-            var filter = document.getElementById("filter-type").value;
+            var entries = document.getElementById("num-entries")?.value || "0";
+            var filter = document.getElementById("filter-type")?.value || "0";
             window.location.href = `/download_log?entries=${entries}&filter=${filter}`;
         }
 
