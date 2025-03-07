@@ -42,63 +42,25 @@ body {
     text-align: center;
 }
 
-/* Title and Subtitle */
-h1 {
-    font-size: 2rem;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--text-color);
-    margin-bottom: 20px;
-    opacity: 0.8;
-}
-
-/* Controls */
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Dropdowns */
-select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background: var(--card-bg);
-    color: var(--text-color);
-    cursor: pointer;
-}
-
-/* Checkboxes */
-.checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
 /* Buttons */
+.button-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 button {
-    width: 100%;
+    width: auto;
+    min-width: 150px;
+    max-width: 250px;
     padding: 12px;
     font-size: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s ease;
-    margin: 8px 0;  /* Adds space around buttons */
+    margin: 8px 5px;
 }
 
 .generate-btn {
@@ -121,15 +83,6 @@ button {
     background-color: #0056b3;
 }
 
-/* Dark Mode Toggle */
-.dark-mode-toggle {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
 /* Responsive Table */
 #lock-sequence {
     margin-top: 20px;
@@ -143,7 +96,6 @@ button {
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 400px;
     background: var(--card-bg);
 }
 
@@ -153,77 +105,13 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
-th {
-    background: var(--table-header-bg);
-    color: var(--table-header-text);
-}
-
-/* Desktop-Specific Styles */
-@media (min-width: 800px) {
-    .container {
-        max-width: 900px;
-    }
-
-    .controls {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 20px;
-        gap: 20px;
-    }
-
-    .checkbox-group {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    button {
-        width: auto;
-        padding: 12px 20px;
-    }
-
-    select {
-        width: auto;
-        padding: 10px 15px;
-    }
-}
-
-/* Mobile Optimization */
+/* Mobile */
 @media (max-width: 600px) {
-    .container {
-        width: 100%;
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .subtitle {
-        font-size: 0.9rem;
-    }
-
-    .checkbox-group {
+    .button-group {
         flex-direction: column;
         align-items: center;
     }
-
     button {
-        font-size: 0.9rem;
-        padding: 10px;
-        margin: 10px 0; /* Adds more space for touch-friendly layout */
-    }
-
-    select {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-
-    table {
-        font-size: 0.9rem;
-    }
-
-    th, td {
-        padding: 8px;
+        width: 90%;
     }
 }

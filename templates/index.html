@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click on 1</title> <!-- App Title -->
+    <title>Click on 1</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 </head>
@@ -35,7 +35,10 @@
             <label><input type="checkbox" id="hard-mode"> Hard Mode (High Variation)</label>
         </div>
 
-        <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button> <!-- Updated Button -->
+        <!-- Generate Button -->
+        <div class="button-group">
+            <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button>
+        </div>
 
         <div id="lock-sequence">
             <h2>Pin Sequence</h2> <!-- Updated Heading -->
@@ -43,7 +46,7 @@
                 <thead>
                     <tr>
                         <th>Spot</th>
-                        <th>Pin Height</th> <!-- Updated -->
+                        <th>Pin Height</th>
                         <th>Type</th>
                     </tr>
                 </thead>
@@ -51,24 +54,8 @@
             </table>
         </div>
 
-        <div class="controls">
-            <label for="filter-type">Filter Logs:</label>
-            <select id="filter-type">
-                <option value="0">All Pins</option>
-                <option value="4">4 Pin</option>
-                <option value="5">5 Pin</option>
-                <option value="6">6 Pin</option>
-            </select>
-
-            <label for="num-entries">Entries to Export:</label>
-            <select id="num-entries">
-                <option value="10">Last 10</option>
-                <option value="25">Last 25</option>
-                <option value="50">Last 50</option>
-                <option value="100">Last 100</option>
-                <option value="0">All</option>
-            </select>
-
+        <!-- Log Buttons -->
+        <div class="button-group">
             <button class="download-btn" onclick="downloadLog()">Download Log</button>
             <button class="clear-btn" onclick="clearLog()">Clear Log</button>
         </div>
@@ -128,7 +115,6 @@
             }
         }
 
-        // Apply dark mode setting on page load
         window.onload = function () {
             if (localStorage.getItem("darkMode") === "enabled") {
                 document.body.classList.add("dark-mode");
