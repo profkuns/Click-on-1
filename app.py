@@ -2,19 +2,18 @@ from flask import Flask, render_template, request, jsonify, send_file
 import csv
 import random
 import os
-from datetime import datetime
 
 app = Flask(__name__, static_folder="static")
 
 LOG_FILE = "lock_log.csv"
 
-# Ensure the log file has a header row when first created
+# Ensure the log file has a proper header row on first creation
 if not os.path.exists(LOG_FILE):
     with open(LOG_FILE, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Timestamp", "Lock Type", "Hard Mode", "Pin Spot", "Pin Number", "Pin Type"])
+        writer = csv.writer(file, delimiter=";")
+        writer.writerow(["Lock #", "Spot 1", "Spot 2", "Spot 3", "Spot 4", "Spot 5", "Spot 6"])
 
-# Function to generate lock sequences with optional Hard Mode
+# Function to generate lock sequences
 def generate_lock_sequence(num_pins, enabled_pins, hard_mode):
     sequence = []
     previous_pin = None  # Track last pin for Hard Mode calculations
@@ -67,26 +66,42 @@ def generate_lock_sequence(num_pins, enabled_pins, hard_mode):
 
         sequence.append({"spot": i + 1, "pin": pin, "type": lock_type})
 
-    log_sequence(num_pins, sequence, hard_mode, enabled_pins)
+    log_sequence(sequence)
     return sequence
 
-# Log sequences to CSV with timestamps and user settings
-def log_sequence(num_pins, sequence, hard_mode, enabled_pins):
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    hard_mode_text = "ON" if hard_mode else "OFF"
-    pin_types_enabled = ", ".join([k for k, v in enabled_pins.items() if v])
+# Log sequences in the new format
+def log_sequence(sequence):
+    # Read the last lock number from the log
+    try:
+        with open(LOG_FILE, "r") as file:
+            last_line = list(csv.reader(file, delimiter=";"))[-1]
+            last_lock_number = int(last_line[0]) if last_line[0].isdigit() else 0
+    except (FileNotFoundError, IndexError):
+        last_lock_number = 0  # If log is empty, start from 1
 
+    lock_number = last_lock_number + 1  # Increment lock number
+
+    log_entry = [lock_number]  # Start with lock number
+
+    # Format each pin spot as "Pin_Number Pin_Type" (e.g., "3 Spool")
+    for row in sequence:
+        log_entry.append(f"{row['pin']} {row['type']}")
+
+    # Fill missing spots with empty values if fewer than 6 pins
+    while len(log_entry) < 7:
+        log_entry.append("")
+
+    # Append the log entry
     with open(LOG_FILE, "a", newline="") as file:
-        writer = csv.writer(file)
-        for row in sequence:
-            writer.writerow([timestamp, num_pins, hard_mode_text, row["spot"], row["pin"], row["type"]])
+        writer = csv.writer(file, delimiter=";")
+        writer.writerow(log_entry)
 
-# Clear log file (keeps header row)
+# Clear log file while keeping the header
 @app.route("/clear_log", methods=["POST"])
 def clear_log():
     with open(LOG_FILE, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Timestamp", "Lock Type", "Hard Mode", "Pin Spot", "Pin Number", "Pin Type"])
+        writer = csv.writer(file, delimiter=";")
+        writer.writerow(["Lock #", "Spot 1", "Spot 2", "Spot 3", "Spot 4", "Spot 5", "Spot 6"])
     return jsonify({"message": "Log cleared!"})
 
 # Generate lock sequences
@@ -103,36 +118,12 @@ def generate():
 
     return jsonify(generate_lock_sequence(num_pins, enabled_pins, hard_mode))
 
-# Download log file with filtering options
+# Download log file
 @app.route("/download_log", methods=["GET"])
 def download_log():
-    entries = request.args.get("entries", "0")
-    filter_type = request.args.get("filter", "0")
-
     if not os.path.exists(LOG_FILE):
         return jsonify({"message": "No logs available."}), 404
-
-    with open(LOG_FILE, "r") as file:
-        reader = list(csv.reader(file))
-    
-    # Apply filtering (Ignore header)
-    header = reader[0]
-    rows = reader[1:]
-
-    if filter_type != "0":
-        rows = [row for row in rows if row[1] == filter_type]
-
-    if entries != "0":
-        rows = rows[-int(entries):]
-
-    # Write filtered data to a new file
-    temp_file = "filtered_log.csv"
-    with open(temp_file, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(header)
-        writer.writerows(rows)
-
-    return send_file(temp_file, as_attachment=True)
+    return send_file(LOG_FILE, as_attachment=True)
 
 # Serve the frontend page
 @app.route("/")
