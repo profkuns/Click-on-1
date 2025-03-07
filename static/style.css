@@ -245,3 +245,36 @@ tr:hover {
         padding: 10px;
     }
 }
+/* Export Section */
+.export-section {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    background: var(--card-bg);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Export Dropdowns */
+.export-section select {
+    width: 80%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* Export Buttons */
+.export-section .button-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}

@@ -10,7 +10,6 @@
 <body>
 
     <div class="app-container">
-        <!-- Dark Mode Toggle -->
         <i id="darkModeIcon" class="fas fa-moon dark-mode-toggle" onclick="toggleDarkMode()"></i>
 
         <h1>Click on 1</h1>
@@ -35,9 +34,7 @@
             <label><input type="checkbox" id="hard-mode"> Hard Mode (High Variation)</label>
         </div>
 
-        <div class="button-group">
-            <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button>
-        </div>
+        <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button>
 
         <div id="lock-sequence">
             <h2>Pin Sequence</h2>
@@ -53,45 +50,50 @@
             </table>
         </div>
 
-        <div class="button-group">
-            <button class="download-btn" onclick="downloadLog()">Download Log</button>
-            <button class="clear-btn" onclick="clearLog()">Clear Log</button>
+        <div class="export-section">
+            <h3>Export Logs</h3>
+            <label for="num-entries">Number of Entries:</label>
+            <select id="num-entries">
+                <option value="0">All</option>
+                <option value="10">Last 10</option>
+                <option value="25">Last 25</option>
+                <option value="50">Last 50</option>
+            </select>
+
+            <label for="filter-type">Filter by Lock Type:</label>
+            <select id="filter-type">
+                <option value="">All</option>
+                <option value="4 Pin">4 Pin</option>
+                <option value="5 Pin">5 Pin</option>
+                <option value="6 Pin">6 Pin</option>
+            </select>
+
+            <div class="button-group">
+                <button class="download-btn" onclick="downloadLog()">Download Log</button>
+                <button class="clear-btn" onclick="clearLog()">Clear Log</button>
+            </div>
         </div>
+
     </div>
 
     <script>
         function generateLock() {
-            var pinCount = document.getElementById("pin-count").value;
-            var standard = document.getElementById("standard").checked;
-            var spool = document.getElementById("spool").checked;
-            var serrated = document.getElementById("serrated").checked;
-            var hardMode = document.getElementById("hard-mode").checked;
-
-            var formData = new URLSearchParams();
+            let pinCount = document.getElementById("pin-count").value;
+            let formData = new URLSearchParams();
             formData.append("pins", pinCount);
-            formData.append("standard", standard);
-            formData.append("spool", spool);
-            formData.append("serrated", serrated);
-            formData.append("hard_mode", hardMode);
 
-            fetch("/generate", {
-                method: "POST",
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                let output = "";
-                data.forEach(row => { 
-                    output += `<tr><td>${row.spot}</td><td>${row.pin}</td><td>${row.type}</td></tr>`; 
+            fetch("/generate", { method: "POST", body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    let output = data.map(row => 
+                        `<tr><td>${row.spot}</td><td>${row.pin}</td><td>${row.type}</td></tr>`).join("");
+                    document.getElementById("sequence-body").innerHTML = output;
                 });
-                document.getElementById("sequence-body").innerHTML = output;
-            })
-            .catch(error => console.error("Error:", error));
         }
 
         function downloadLog() {
-            var entries = document.getElementById("num-entries")?.value || "0";
-            var filter = document.getElementById("filter-type")?.value || "0";
+            let entries = document.getElementById("num-entries").value;
+            let filter = document.getElementById("filter-type").value;
             window.location.href = `/download_log?entries=${entries}&filter=${filter}`;
         }
 
@@ -100,25 +102,6 @@
                 .then(res => res.json())
                 .then(data => alert(data.message));
         }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle("dark-mode");
-
-            if (document.body.classList.contains("dark-mode")) {
-                localStorage.setItem("darkMode", "enabled");
-                document.getElementById("darkModeIcon").classList.replace("fa-moon", "fa-sun");
-            } else {
-                localStorage.setItem("darkMode", "disabled");
-                document.getElementById("darkModeIcon").classList.replace("fa-sun", "fa-moon");
-            }
-        }
-
-        window.onload = function () {
-            if (localStorage.getItem("darkMode") === "enabled") {
-                document.body.classList.add("dark-mode");
-                document.getElementById("darkModeIcon").classList.replace("fa-moon", "fa-sun");
-            }
-        };
     </script>
 
 </body>
