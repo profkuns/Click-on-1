@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click on 1</title> <!-- Updated App Name -->
+    <title>Click on 1</title> <!-- App Title -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 </head>
 <body>
 
     <div class="container">
+        <!-- Dark Mode Toggle Icon -->
         <i id="darkModeIcon" class="fas fa-moon dark-mode-toggle" onclick="toggleDarkMode()"></i>
 
         <h1>Click on 1</h1> <!-- App Title -->
-        <h2 class="subtitle">An app to help lockpickers with American 1100/700's and similar locks</h2> <!-- New Subtitle -->
+        <h2 class="subtitle">An app to help lockpickers with American 1100/700's and similar locks</h2> <!-- Subtitle -->
 
         <div class="controls">
             <label for="pin-count">Select Lock Type:</label>
@@ -108,6 +109,32 @@
             var filter = document.getElementById("filter-type").value;
             window.location.href = `/download_log?entries=${entries}&filter=${filter}`;
         }
+
+        function clearLog() {
+            fetch("/clear_log", { method: "POST" })
+                .then(res => res.json())
+                .then(data => alert(data.message));
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+                document.getElementById("darkModeIcon").classList.replace("fa-moon", "fa-sun");
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+                document.getElementById("darkModeIcon").classList.replace("fa-sun", "fa-moon");
+            }
+        }
+
+        // Apply dark mode setting on page load
+        window.onload = function () {
+            if (localStorage.getItem("darkMode") === "enabled") {
+                document.body.classList.add("dark-mode");
+                document.getElementById("darkModeIcon").classList.replace("fa-moon", "fa-sun");
+            }
+        };
     </script>
 
 </body>
