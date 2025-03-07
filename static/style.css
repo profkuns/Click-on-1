@@ -22,6 +22,12 @@
     --button-hover: #0c6e35;
 }
 
+/* Apply Smooth Transition */
+body, .app-container, table, th, td, button {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Global Layout */
 body {
     font-family: 'Arial', sans-serif;
     background-color: var(--bg-color);
@@ -161,11 +167,6 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
-th {
-    background: var(--table-header-bg);
-    color: var(--table-header-text);
-}
-
 /* Mobile Fixes */
 @media (max-width: 600px) {
     .app-container {
@@ -178,11 +179,6 @@ th {
         right: 10px;
     }
 
-    .checkbox-group {
-        flex-direction: column;
-        align-items: center;
-    }
-
     .button-group {
         flex-direction: column;
         align-items: center;
@@ -191,13 +187,5 @@ th {
     button {
         width: 90%;
         margin: 8px 0;
-    }
-
-    table {
-        font-size: 0.9rem;
-    }
-
-    th, td {
-        padding: 8px;
     }
 }
