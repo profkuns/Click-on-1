@@ -65,7 +65,10 @@
         </div>
 
         <div id="recent-log">
-            <h3>Recent Sequences</h3>
+        <h3>Recent Sequences</h3>
+
+        <!-- Full table for desktop -->
+        <div id="desktop-log">
             <table>
                 <thead>
                     <tr>
@@ -82,6 +85,13 @@
                 <tbody id="recent-sequences-body"></tbody>
             </table>
         </div>
+
+        <!-- Vertical list for mobile -->
+        <div id="mobile-log">
+            <div id="recent-mobile-sequences"></div>
+        </div>
+    </div>
+
 
     </div>
 
@@ -129,31 +139,48 @@
     }
 
     function updateRecentSequences() {
-        fetch("/recent_sequences")
-        .then(response => response.json())
-        .then(data => {
-            let output = "";
-            data.forEach(sequence => {
-                let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.time}</td>`;
-                let rowTypes = "<tr><td></td><td></td>";
+    fetch("/recent_sequences")
+    .then(response => response.json())
+    .then(data => {
+        let tableOutput = "";
+        let mobileOutput = "";
 
-                sequence.pins.forEach(pin => {
-                    rowPins += `<td>${pin}</td>`;
-                });
-                sequence.types.forEach(type => {
-                    rowTypes += `<td>${type}</td>`;
-                });
+        data.forEach(sequence => {
+            let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.time}</td>`;
+            let rowTypes = "<tr><td></td><td></td>";
 
-                rowPins += "</tr>";
-                rowTypes += "</tr>";
-
-                output += rowPins + rowTypes;
+            sequence.pins.forEach(pin => {
+                rowPins += `<td>${pin}</td>`;
+            });
+            sequence.types.forEach(type => {
+                rowTypes += `<td>${type}</td>`;
             });
 
-            document.getElementById("recent-sequences-body").innerHTML = output;
-        })
-        .catch(error => console.error("Error fetching recent sequences:", error));
-    }
+            rowPins += "</tr>";
+            rowTypes += "</tr>";
+
+            tableOutput += rowPins + rowTypes;
+        });
+
+        document.getElementById("recent-sequences-body").innerHTML = tableOutput;
+
+        // Mobile format: Show only the last 10 sequences
+        let recentMobileData = data.slice(0, 10);
+        recentMobileData.forEach(sequence => {
+            mobileOutput += `
+                <div class="mobile-sequence">
+                    <h4>${sequence.type} - ${sequence.time}</h4>
+                    <p><strong>Key Pins:</strong> ${sequence.pins.join(", ")}</p>
+                    <p><strong>Drivers:</strong> ${sequence.types.join(", ")}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById("recent-mobile-sequences").innerHTML = mobileOutput;
+    })
+    .catch(error => console.error("Error fetching recent sequences:", error));
+}
+
 
     function toggleDarkMode() {
         document.body.classList.toggle("dark-mode");

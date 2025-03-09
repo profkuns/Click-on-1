@@ -372,3 +372,69 @@ tr:hover {
 .controls label {
     font-weight: bold;
 }
+/* Responsive Table Wrapper */
+#recent-log {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    max-width: 100%;
+    display: block;
+}
+
+/* Ensure the table doesn't break the layout */
+#recent-log table {
+    min-width: 600px; /* Prevents table from shrinking too much */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Fix column spacing */
+#recent-log th, 
+#recent-log td {
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap; /* Keeps content on one line */
+}
+
+/* Ensure smooth scrolling on mobile */
+@media (max-width: 600px) {
+    #recent-log {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    }
+}
+/* Default: Desktop view (show table, hide mobile list) */
+#desktop-log {
+    display: block;
+}
+#mobile-log {
+    display: none;
+}
+
+/* Mobile view: Show vertical list, hide table */
+@media (max-width: 600px) {
+    #desktop-log {
+        display: none;
+    }
+    #mobile-log {
+        display: block;
+        text-align: center;
+    }
+
+    .mobile-sequence {
+        background: var(--card-bg);
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-sequence h4 {
+        margin: 5px 0;
+        font-size: 1rem;
+    }
+
+    .mobile-sequence p {
+        margin: 2px 0;
+        font-size: 0.9rem;
+    }
+}
+
