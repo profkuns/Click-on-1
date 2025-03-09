@@ -17,7 +17,16 @@
         <h2 class="subtitle">A tool to help pickers with bitting and security pins</h2>
 
         <div class="controls">
-            <label for="pin-count">Select Lock Type:</label>
+            <label for="lock-type">Select Lock Type:</label>
+            <select id="lock-type">
+                <option value="American 1100">American 1100</option>
+                <option value="Schlage SC1">Schlage SC1</option>
+                <option value="Kwikset KW1">Kwikset KW1</option>
+            </select>
+        </div>
+
+        <div class="controls">
+            <label for="pin-count">Select Pin Count:</label>
             <select id="pin-count">
                 <option value="4">4 Pin</option>
                 <option value="5">5 Pin</option>
@@ -59,12 +68,12 @@
                     <tr>
                         <th>Type</th>
                         <th>Time</th>
-                        <th>Spot 1</th>
-                        <th>Spot 2</th>
-                        <th>Spot 3</th>
-                        <th>Spot 4</th>
-                        <th>Spot 5</th>
-                        <th>Spot 6</th>
+                        <th>#1</th>
+                        <th>#2</th>
+                        <th>#3</th>
+                        <th>#4</th>
+                        <th>#5</th>
+                        <th>#6</th>
                     </tr>
                 </thead>
                 <tbody id="recent-sequences-body"></tbody>
@@ -75,18 +84,13 @@
 
     <script>
     function generateLock() {
-        let pinCount = document.getElementById("pin-count").value;
-        let standard = document.getElementById("standard").checked;
-        let spool = document.getElementById("spool").checked;
-        let serrated = document.getElementById("serrated").checked;
-        let hardMode = document.getElementById("hard-mode").checked;
-
         let formData = new URLSearchParams();
-        formData.append("pins", pinCount);
-        formData.append("standard", standard);
-        formData.append("spool", spool);
-        formData.append("serrated", serrated);
-        formData.append("hard_mode", hardMode);
+        formData.append("lock_type", document.getElementById("lock-type").value);
+        formData.append("pins", document.getElementById("pin-count").value);
+        formData.append("standard", document.getElementById("standard").checked);
+        formData.append("spool", document.getElementById("spool").checked);
+        formData.append("serrated", document.getElementById("serrated").checked);
+        formData.append("hard_mode", document.getElementById("hard-mode").checked);
 
         fetch("/generate", {
             method: "POST",
@@ -100,7 +104,6 @@
             ).join("");
             document.getElementById("sequence-body").innerHTML = output;
 
-            // Update recent sequences after generating a new one
             updateRecentSequences();
         })
         .catch(error => console.error("Error:", error));
@@ -112,8 +115,8 @@
         .then(data => {
             let output = "";
             data.forEach(sequence => {
-                let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.timestamp}</td>`;
-                let rowTypes = "<tr><td></td><td></td>"; // Empty cells for Type and Timestamp row
+                let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.time}</td>`;
+                let rowTypes = "<tr><td></td><td></td>"; // Empty cells for Type and Time
 
                 sequence.pins.forEach(pin => {
                     rowPins += `<td>${pin}</td>`;
@@ -133,8 +136,37 @@
         .catch(error => console.error("Error fetching recent sequences:", error));
     }
 
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        let icon = document.getElementById("darkModeIcon");
+
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("darkMode", "enabled");
+            icon.classList.replace("fa-moon", "fa-sun");
+        } else {
+            localStorage.setItem("darkMode", "disabled");
+            icon.classList.replace("fa-sun", "fa-moon");
+        }
+    }
+
+    // Load dark mode preference
+    function loadDarkMode() {
+        let darkModeSetting = localStorage.getItem("darkMode");
+        let icon = document.getElementById("darkModeIcon");
+
+        if (darkModeSetting === "enabled") {
+            document.body.classList.add("dark-mode");
+            icon.classList.replace("fa-moon", "fa-sun");
+        } else {
+            document.body.classList.remove("dark-mode");
+            icon.classList.replace("fa-sun", "fa-moon");
+        }
+    }
+
     window.onload = function () {
         updateRecentSequences();
+        loadDarkMode();
     };
     </script>
 

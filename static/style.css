@@ -334,7 +334,7 @@ tr:hover {
     }
 }
 /* Match Lock Type Dropdown to Export Dropdowns & Center */
-#pin-count {
+#pin-count, #lock-type {
     width: 100%;
     max-width: 300px;
     padding: 10px;
