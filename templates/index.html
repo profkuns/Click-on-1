@@ -58,6 +58,7 @@
                 <thead>
                     <tr>
                         <th>Type</th>
+                        <th>Time</th>
                         <th>Spot 1</th>
                         <th>Spot 2</th>
                         <th>Spot 3</th>
@@ -111,8 +112,8 @@
         .then(data => {
             let output = "";
             data.forEach(sequence => {
-                let rowPins = `<tr><td>${sequence.type}</td>`;
-                let rowTypes = "<tr><td></td>";
+                let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.timestamp}</td>`;
+                let rowTypes = "<tr><td></td><td></td>"; // Empty cells for Type and Timestamp row
 
                 sequence.pins.forEach(pin => {
                     rowPins += `<td>${pin}</td>`;

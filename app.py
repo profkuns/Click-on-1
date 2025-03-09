@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import random
+import datetime
 
 app = Flask(__name__)
 
@@ -57,13 +58,17 @@ def generate_sequence():
         else:
             pin_type = random.choice(available_types)
 
-        # Explicitly add spot number to fix "undefined" issue
+        # Explicitly add spot number
         sequence.append({"spot": i + 1, "pin": pin_height, "type": pin_type})
         previous_height = pin_height
 
-    # Convert sequence to A1100 table format
+    # Generate timestamp
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Convert sequence to A1100 table format with timestamp
     formatted_sequence = {
         "type": "A1100",
+        "timestamp": timestamp,
         "pins": [item["pin"] for item in sequence],
         "types": [item["type"] for item in sequence]
     }
