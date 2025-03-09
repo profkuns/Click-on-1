@@ -17,8 +17,8 @@
         <h2 class="subtitle">A tool to help pickers with bitting and security pins</h2>
 
         <div class="controls">
-            <label for="lock-type">Select Lock Type:</label>
-            <select id="lock-type">
+            <label for="lock-type">Lock Type:</label>
+            <select id="lock-type" onchange="toggleMacsMode()">
                 <option value="American 1100">American 1100</option>
                 <option value="Schlage SC1">Schlage SC1</option>
                 <option value="Kwikset KW1">Kwikset KW1</option>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="controls">
-            <label for="pin-count">Select Pin Count:</label>
+            <label for="pin-count">Number of Pins</label>
             <select id="pin-count">
                 <option value="4">4 Pin</option>
                 <option value="5">5 Pin</option>
@@ -42,6 +42,10 @@
 
         <div class="checkbox-group">
             <label><input type="checkbox" id="hard-mode"> Hard Mode (High Variation)</label>
+            <label>
+                <input type="checkbox" id="macs-mode" disabled> 
+                <span id="macs-label">MACS Mode</span>
+            </label>
         </div>
 
         <button class="generate-btn" onclick="generateLock()">Generate Pin Sequence</button>
@@ -60,7 +64,6 @@
             </table>
         </div>
 
-        <!-- Recent Sequences Log -->
         <div id="recent-log">
             <h3>Recent Sequences</h3>
             <table>
@@ -83,6 +86,21 @@
     </div>
 
     <script>
+    function toggleMacsMode() {
+        let lockType = document.getElementById("lock-type").value;
+        let macsCheckbox = document.getElementById("macs-mode");
+        let macsLabel = document.getElementById("macs-label");
+
+        if (lockType === "American 1100") {
+            macsCheckbox.checked = false;
+            macsCheckbox.disabled = true;
+            macsLabel.style.color = "#999";  // Grayed out text
+        } else {
+            macsCheckbox.disabled = false;
+            macsLabel.style.color = "";  // Restore default color
+        }
+    }
+
     function generateLock() {
         let formData = new URLSearchParams();
         formData.append("lock_type", document.getElementById("lock-type").value);
@@ -91,6 +109,7 @@
         formData.append("spool", document.getElementById("spool").checked);
         formData.append("serrated", document.getElementById("serrated").checked);
         formData.append("hard_mode", document.getElementById("hard-mode").checked);
+        formData.append("macs_mode", document.getElementById("macs-mode").checked);
 
         fetch("/generate", {
             method: "POST",
@@ -116,7 +135,7 @@
             let output = "";
             data.forEach(sequence => {
                 let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.time}</td>`;
-                let rowTypes = "<tr><td></td><td></td>"; // Empty cells for Type and Time
+                let rowTypes = "<tr><td></td><td></td>";
 
                 sequence.pins.forEach(pin => {
                     rowPins += `<td>${pin}</td>`;
@@ -136,7 +155,6 @@
         .catch(error => console.error("Error fetching recent sequences:", error));
     }
 
-    // Dark Mode Toggle
     function toggleDarkMode() {
         document.body.classList.toggle("dark-mode");
         let icon = document.getElementById("darkModeIcon");
@@ -150,7 +168,6 @@
         }
     }
 
-    // Load dark mode preference
     function loadDarkMode() {
         let darkModeSetting = localStorage.getItem("darkMode");
         let icon = document.getElementById("darkModeIcon");
@@ -167,6 +184,7 @@
     window.onload = function () {
         updateRecentSequences();
         loadDarkMode();
+        toggleMacsMode();  // Ensure correct state on page load
     };
     </script>
 
