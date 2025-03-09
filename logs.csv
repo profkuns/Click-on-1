@@ -463,3 +463,4 @@ Timestamp,Lock Type,Spot,Pin Height,Pin Type,Hard Mode
 "6 Pin,8 (standard),3 (spool),7 (serrated),2 (spool),6 (serrated),1 (spool)"
 "6 Pin,2 (spool),4 (serrated),2 (spool),7 (spool),3 (spool),6 (serrated)"
 "6 Pin,7 (spool),1 (serrated),4 (serrated),1 (spool),3 (serrated),5 (spool)"
+"6 Pin,5 (spool),8 (standard),7 (serrated),4 (standard),3 (serrated),8 (standard)"
