@@ -146,7 +146,13 @@
         let mobileOutput = "";
 
         data.forEach(sequence => {
-            let rowPins = `<tr><td>${sequence.type}</td><td>${sequence.time}</td>`;
+            // Display MACS in the same <td> as the lock type
+            let typeText = sequence.type;
+            if (sequence.macs_mode) {
+                typeText += " (MACS)";
+            }
+
+            let rowPins = `<tr><td>${typeText}</td><td>${sequence.time}</td>`;
             let rowTypes = "<tr><td></td><td></td>";
 
             sequence.pins.forEach(pin => {
@@ -167,9 +173,14 @@
         // Mobile format: Show only the last 10 sequences
         let recentMobileData = data.slice(0, 10);
         recentMobileData.forEach(sequence => {
+            let typeText = sequence.type;
+            if (sequence.macs_mode) {
+                typeText += " (MACS)";
+            }
+
             mobileOutput += `
                 <div class="mobile-sequence">
-                    <h4>${sequence.type} - ${sequence.time}</h4>
+                    <h4>${typeText} - ${sequence.time}</h4>
                     <p><strong>Key Pins:</strong> ${sequence.pins.join(", ")}</p>
                     <p><strong>Drivers:</strong> ${sequence.types.join(", ")}</p>
                 </div>

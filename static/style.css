@@ -437,4 +437,12 @@ tr:hover {
         font-size: 0.9rem;
     }
 }
+/* Style for MACS label in the Type column */
+.macs-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff4500; /* Orange text to stand out */
+    font-weight: bold;
+}
+
 

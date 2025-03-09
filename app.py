@@ -108,7 +108,8 @@ def generate_sequence():
         "type": lock_type_mapping.get(lock_type, lock_type),
         "time": timestamp,
         "pins": [item["pin"] for item in sequence],
-        "types": [item["type"] for item in sequence]
+        "types": [item["type"] for item in sequence],
+        "macs_mode": macs_mode  # Store MACS mode status
     }
 
     recent_sequences.insert(0, formatted_sequence)
@@ -116,9 +117,20 @@ def generate_sequence():
 
     return jsonify(sequence)
 
-@app.route("/recent_sequences", methods=["GET"])
+# Fetch Recent Sequences
+@app.route("/recent_sequences")
 def get_recent_sequences():
-    return jsonify(recent_sequences)
+    formatted_log = []
+    for entry in recent_sequences:
+        formatted_log.append({
+            "type": entry["type"],
+            "time": entry["time"],
+            "pins": entry["pins"],
+            "types": entry["types"],
+            "macs_mode": entry.get("macs_mode", False)  # Ensure MACS mode is included
+        })
+
+    return jsonify(formatted_log)
 
 @app.route("/")
 def home():
