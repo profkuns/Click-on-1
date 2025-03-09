@@ -369,4 +369,6 @@ tr:hover {
 .attribution a:hover {
     text-decoration: underline;
 }
-
+.controls label {
+    font-weight: bold;
+}
